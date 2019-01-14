@@ -6,13 +6,13 @@ let g:loaded_buffer_history = 1
 augroup BufferHistory
   au!
 
-  autocmd BufEnter * call buffer_history#add(winbufnr(0))
+  autocmd TextChanged * call buffer_history#add(winbufnr(0))
   autocmd BufWipeout * call buffer_history#remove(bufnr('<afile>'))
 augroup END
 
-command! BufferHistoryList call buffer_history#list()
-command! -count=1 BufferHistoryBack call buffer_history#jump()
-command! -count=1 BufferHistoryForward call buffer_history#jump(1)
+command! BufferHistoryList call echo join(buffer_history#list(), "\n")
+command! -count=1 BufferHistoryBack call buffer_history#jump(bufnr('%'), -1)
+command! -count=1 BufferHistoryForward call buffer_history#jump(bufnr('%'), 1)
 
 nnoremap <silent> <Plug>(buffer-history-list) :BufferHistoryList<CR>
 nnoremap <silent> <Plug>(buffer-history-back) :BufferHistoryBack<CR>
